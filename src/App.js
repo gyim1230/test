@@ -82,8 +82,6 @@ function App() {
           Learn React
         </a>
         <button type="button" onClick={add}>1</button>
-        <button type="button" onClick={add2}>2</button>
-        <button type="button" onClick={add3}>3</button>
         <button type="button" onClick={add4}>4</button>
       </header>
     </div>
