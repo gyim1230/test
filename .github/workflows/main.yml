@@ -1,26 +1,43 @@
-name: Deployment
+name: Deploy Key test
+ 
 on:
   push:
-    branches:
-      - master
+  
 jobs:
-  deploy:
+  main:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [12.x]
+    name: Access private repo
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Install Packages
-      run: yarn install
-    - name: Build page
-      run: npm run build
-    - name: Deploy to gh-pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        publish_dir: ./build
+ 
+      - name: Checkout secrets
+        uses: actions/checkout@v2
+ 
+      - name: Decrypt secrets
+        env:
+          ENCRYPTION_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
+        run: |
+          openssl aes-256-cbc -in .github/workflows/secrets/id_rsa.enc -out .github/workflows/secrets/id_rsa -pass pass:$ENCRYPTION_KEY -d -md sha1
+ 
+      - name: Setup SSH agent
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+ 
+          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
+          chmod 0600 .github/workflows/secrets/id_rsa
+          ssh-add .github/workflows/secrets/id_rsa
+ 
+      - name: Checkout
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: git clone git@github.com:eclipsesource/ios-provisioning.git
+ 
+      - name: Cleanup
+        if: always()
+        env:
+          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+          ssh-add -D
+          rm -Rf *
