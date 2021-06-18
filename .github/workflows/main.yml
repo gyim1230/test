@@ -14,6 +14,8 @@ jobs:
 
       - name: Deploy 🚀
         run: |
+          git config --global user.email ${{ secrets.EMAIL}}
+          git config --global user.name ${{ secrets.NAME}}
           npm run deploy
 #         uses: JamesIves/github-pages-deploy-action@4.1.4
 #         with:
