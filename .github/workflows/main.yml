@@ -1,43 +1,35 @@
-name: Deploy Key test
- 
+name: Deploy Project
 on:
   push:
-  
+    branches:
+      - dev
 jobs:
-  main:
+  update:
     runs-on: ubuntu-latest
-    name: Access private repo
     steps:
- 
-      - name: Checkout secrets
-        uses: actions/checkout@v2
- 
-      - name: Decrypt secrets
+      - uses: actions/checkout@master
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-build-${{hashFiles('**/yarn.lock')}}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ runner.OS }}-
+      - name: Install dependencies
+        run: yarn install --prod --pure-lockfile
+
+      - name: Build
+        run: yarn run build
         env:
-          ENCRYPTION_KEY: ${{ secrets.ACTIONS_DEPLOY_KEY }}
-        run: |
-          openssl aes-256-cbc -in .github/workflows/secrets/id_rsa.enc -out .github/workflows/secrets/id_rsa -pass pass:$ENCRYPTION_KEY -d -md sha1
- 
-      - name: Setup SSH agent
+          NODE_ENV: production
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2.5.0
         env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
- 
-          ssh-agent -a $SSH_AUTH_SOCK > /dev/null
-          chmod 0600 .github/workflows/secrets/id_rsa
-          ssh-add .github/workflows/secrets/id_rsa
- 
-      - name: Checkout
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: git clone git@github.com:eclipsesource/ios-provisioning.git
- 
-      - name: Cleanup
-        if: always()
-        env:
-          SSH_AUTH_SOCK: /tmp/ssh_agent.sock
-        run: |
-          ssh-add -D
-          rm -Rf *
+          PERSONAL_TOKEN: ${{secrets.GH_PAT}}
+          PUBLISH_BRANCH: master
+          PUBLISH_DIR: ./public
+          SCRIPT_MODE: true
