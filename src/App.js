@@ -1,3 +1,4 @@
+
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
@@ -21,7 +22,7 @@ function App() {
       { withCredentials: true }
     );
 
-    console.log("aa3", data)
+    console.log("a", data)
   }
 
   const add2 = async () => {
@@ -82,6 +83,8 @@ function App() {
           Learn React
         </a>
         <button type="button" onClick={add}>1</button>
+        <button type="button" onClick={add2}>2</button>
+        <button type="button" onClick={add3}>3</button>
         <button type="button" onClick={add4}>4</button>
       </header>
     </div>
