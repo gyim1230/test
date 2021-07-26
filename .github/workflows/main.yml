@@ -1,5 +1,6 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 name: Build & deploy
 
 on:
@@ -60,6 +61,8 @@ jobs:
 =======
 =======
 >>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
+=======
+>>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
 name: Deploy Project
 on:
   push:
@@ -96,6 +99,9 @@ jobs:
           PUBLISH_DIR: ./public
           SCRIPT_MODE: true
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
+=======
 >>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
 =======
 >>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
