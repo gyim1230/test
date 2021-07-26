@@ -21,7 +21,7 @@ function App() {
       { withCredentials: true }
     );
 
-    console.log("aa", data)
+    console.log("aa3", data)
   }
 
   const add2 = async () => {
