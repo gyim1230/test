@@ -1,57 +1,35 @@
-name: Build & deploy
-
+name: Deploy Project
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
+      - master
 jobs:
-  build:
-    name: Build
+  update:
     runs-on: ubuntu-latest
-    
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: 13.x
-    
-    - name: Install NPM packages
-      run: npm ci
-    
-    - name: Build project
-      run: npm run build
-    
-    - name: Run tests
-      run: npm run test
+      - uses: actions/checkout@master
+      - name: Set up Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: 12.x
+      - name: Cache node_modules
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{runner.OS}}-build-${{hashFiles('**/yarn.lock')}}
+          restore-keys: |
+            ${{ runner.OS }}-build-${{ runner.OS }}-
+      - name: Install dependencies
+        run: yarn install --prod --pure-lockfile
 
-    - name: Upload production-ready build files
-      uses: actions/upload-artifact@v2
-      with:
-        name: production-files
-        path: ./build
-  
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: production-files
-        path: ./build
-
-    - name: Deploy to gh-pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
+      - name: Build
+        run: yarn run build
+        env:
+          NODE_ENV: production
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v2.5.0
+        env:
+          PERSONAL_TOKEN: ${{secrets.GH_PAT}}
+          PUBLISH_BRANCH: master
+          PUBLISH_DIR: ./public
+          SCRIPT_MODE: true
