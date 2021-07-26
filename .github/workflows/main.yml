@@ -1,68 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-name: Build & deploy
-
-on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-
-jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-    
-    - name: Install Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: 13.x
-    
-    - name: Install NPM packages
-      run: npm ci
-    
-    - name: Build project
-      run: npm run build
-    
-    - name: Run tests
-      run: npm run test
-
-    - name: Upload production-ready build files
-      uses: actions/upload-artifact@v2
-      with:
-        name: production-files
-        path: ./build
-  
-  deploy:
-    name: Deploy
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    
-    steps:
-    - name: Download artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: production-files
-        path: ./build
-
-    - name: Deploy to gh-pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./build
-=======
-=======
->>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
-=======
->>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
 name: Deploy Project
 on:
   push:
@@ -98,10 +33,3 @@ jobs:
           PUBLISH_BRANCH: master
           PUBLISH_DIR: ./public
           SCRIPT_MODE: true
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
-=======
->>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)
-=======
->>>>>>> parent of fa62b3d (Automated deployment: Fri Jun 18 05:14:12 UTC 2021 71ca36ac532aedaa7e4b1d3b19f7b53911e122d6)

@@ -1,3 +1,4 @@
+
 import logo from './logo.svg';
 import './App.css';
 import React, { useState } from 'react';
@@ -10,58 +11,58 @@ const TASKS_URLs = "https://ec2-15-165-220-68.ap-northeast-2.compute.amazonaws.c
 function App() {
   const [count, setCount] = useState(0);
 
-  const add = async() => {
+  const add = async () => {
     setCount(count + 1);
 
-      const { data } = await axios.get(
-        `${TASKS_URL}:3000`,
-        {
+    const { data } = await axios.get(
+      `${TASKS_URL}:3000`,
+      {
 
-        },
-        { withCredentials: true }
-      );
+      },
+      { withCredentials: true }
+    );
 
     console.log("a", data)
   }
 
-  const add2 = async() => {
+  const add2 = async () => {
     setCount(count + 1);
 
-      const { data } = await axios.get(
-        `${TASKS_URL}:443`,
-        {
+    const { data } = await axios.get(
+      `${TASKS_URL}:443`,
+      {
 
-        },
-        { withCredentials: true }
-      );
+      },
+      { withCredentials: true }
+    );
 
     console.log("a", data)
   }
 
-  const add3 = async() => {
+  const add3 = async () => {
     setCount(count + 1);
 
-      const { data } = await axios.get(
-        `${TASKS_URLs}:3000`,
-        {
+    const { data } = await axios.get(
+      `${TASKS_URLs}:3000`,
+      {
 
-        },
-        { withCredentials: true }
-      );
+      },
+      { withCredentials: true }
+    );
 
     console.log("a", data)
   }
 
-  const add4 = async() => {
+  const add4 = async () => {
     setCount(count + 1);
 
-      const { data } = await axios.get(
-        `${TASKS_URLs}:443`,
-        {
+    const { data } = await axios.get(
+      `${TASKS_URLs}:443`,
+      {
 
-        },
-        { withCredentials: true }
-      );
+      },
+      { withCredentials: true }
+    );
 
     console.log("a", data)
   }
